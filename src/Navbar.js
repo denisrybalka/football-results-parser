@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Content from "./Content";
 
-const Navbar = ({ updateData, data, loading, handleActiveTab }) => {
+const Navbar = ({ updateData, data, loading, handleActiveTab, toggleModal }) => {
   const navItems = ["Все матчи", "Онлайн", "Завершенные"];
   const navItemsRoutes = ["/", "online", "finished"];
 
@@ -30,7 +30,7 @@ const Navbar = ({ updateData, data, loading, handleActiveTab }) => {
             <button
               className="btn btn-success updateData-btn"
               onClick={updateData}
-              disabled={loading}
+              disabled={loading && !data.modalActiveGame}
             >
               <span
                 className="spinner-border spinner-border-sm"
@@ -38,14 +38,14 @@ const Navbar = ({ updateData, data, loading, handleActiveTab }) => {
                 aria-hidden="true"
                 style={{
                   marginRight: "10px",
-                  display: loading ? "inline-block" : "none",
+                  display: loading && !data.modalActiveGame ? "inline-block" : "none",
                 }}
               ></span>
-              {loading ? "Обновление данных..." : "Обновить данные"}
+              {loading && !data.modalActiveGame ? "Обновление данных..." : "Обновить данные"}
             </button>
           </ul>
         </div>
-        <Content data={data} loading={loading} />
+        <Content data={data} loading={loading} toggleModal={toggleModal}/>
       </div>
     </div>
   );
