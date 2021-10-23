@@ -3,14 +3,19 @@ import axios from "axios";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import Modal from "./Modal";
+import Favorites from "./Favorites";
+import Saved from "./Saved";
+import Deleted from "./Deleted";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Route, Switch } from "react-router";
 
 const url = "http://localhost:3001";
 
 const App = () => {
   const [data, setData] = React.useState({
     activeTab: 0,
+    activeBar: 0,
     modalActiveGame: null,
   });
   const [loading, setLoading] = React.useState(false);
@@ -36,12 +41,27 @@ const App = () => {
       .get(`${url}/getData`)
       .then(({ data }) => {
         const lastUpdate = Date.now();
-        localStorage.setItem("data", JSON.stringify(data));
+        localStorage.setItem(
+          "data",
+          JSON.stringify(
+            data.map((el) => {
+              return {
+                ...el,
+                additionalStatistic: null,
+              };
+            })
+          )
+        );
         localStorage.setItem("lastUpdate", JSON.stringify(lastUpdate));
         setData((state) => {
           return {
             ...state,
-            games: data,
+            games: data.map((el) => {
+              return {
+                ...el,
+                additionalStatistic: null,
+              };
+            }),
             updateTime: lastUpdate,
           };
         });
@@ -62,6 +82,15 @@ const App = () => {
     });
   };
 
+  const handleActiveBar = (id) => {
+    setData((state) => {
+      return {
+        ...state,
+        activeBar: id,
+      };
+    });
+  };
+
   const toggleModal = (isToggleModal, game = null) => {
     setModal(isToggleModal);
     setData((state) => {
@@ -75,7 +104,7 @@ const App = () => {
   };
 
   const fetchAdditionalStatistics = (game) => {
-    if (!game.additionalStatistic) {
+    if (game.additionalStatistic === null) {
       setLoading(true);
       axios
         .get(`${url}/getGameStatistic/${game.statistic}`)
@@ -86,12 +115,16 @@ const App = () => {
               modalActiveGame: {
                 ...state.modalActiveGame,
                 additionalStatistic: data,
+                play__result: data.score,
+                play__time: data.time,
               },
               games: state.games.map((play) => {
                 if (play.statistic === game.statistic) {
                   return {
                     ...play,
                     additionalStatistic: data,
+                    play__result: data.score,
+                    play__time: data.time,
                   };
                 } else {
                   return play;
@@ -101,7 +134,9 @@ const App = () => {
           });
         })
         .catch((error) => console.error(error))
-        .finally(() => setLoading(false));
+        .finally(() => {
+          setLoading(false);
+        });
     }
   };
 
@@ -109,14 +144,27 @@ const App = () => {
     <div className="App">
       <div className="card main-block">
         <div className="card-body main-block__inner">
-          <Sidebar />
-          <Navbar
-            updateData={updateData}
-            data={data}
-            loading={loading}
-            handleActiveTab={handleActiveTab}
-            toggleModal={toggleModal}
-          />
+          <Sidebar handleActiveBar={handleActiveBar} data={data} />
+          <Switch>
+            <Route path="/panel/:filter">
+              <Navbar
+                updateData={updateData}
+                data={data}
+                loading={loading}
+                handleActiveTab={handleActiveTab}
+                toggleModal={toggleModal}
+              />
+            </Route>
+            <Route exact path="/favorites">
+              <Favorites />
+            </Route>
+            <Route exact path="/saved">
+              <Saved />
+            </Route>
+            <Route exact path="/deleted">
+              <Deleted />
+            </Route>
+          </Switch>
         </div>
       </div>
       <Modal

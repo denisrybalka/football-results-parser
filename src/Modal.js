@@ -24,7 +24,7 @@ const Modal = ({ isToggleModal, toggleModal, data, loading }) => {
             <div className="modal-body">
               <div className="header-wrap">
                 <div className="header-team">
-                  <div className="header-team__logo"></div>
+                  <img className="header-team__logo" src={game && game.additionalStatistic.images[0]}/>
                   <div className="header-team__name">
                     {game && game["play__team-1"]}
                   </div>
@@ -34,7 +34,7 @@ const Modal = ({ isToggleModal, toggleModal, data, loading }) => {
                   <div className="header-team__name">
                     {game && game["play__team-2"]}
                   </div>
-                  <div className="header-team__logo"></div>
+                  <img className="header-team__logo" src={game &&game.additionalStatistic.images[1]}/>
                 </div>
               </div>
               <div className="goals-wrap">

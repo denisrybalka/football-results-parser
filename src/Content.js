@@ -13,7 +13,8 @@ const Content = ({ data, loading, toggleModal }) => {
     if (filterValue === "online") {
       filteredGames = filteredGames.filter(
         ({ play__time }) =>
-          play__time.split("").filter((a) => a === "’").length > 0
+          play__time.split("").filter((a) => a === "’").length > 0 ||
+          play__time === "перерыв"
       );
     } else if (filterValue === "finished") {
       filteredGames = filteredGames.filter(
@@ -31,7 +32,7 @@ const Content = ({ data, loading, toggleModal }) => {
         )}
         <div className="row row-cols-1 row-cols-md-2 g-4 ">
           {loading && !data.modalActiveGame ? (
-            <Loader height="60vh"/>
+            <Loader height="60vh" />
           ) : (
             filteredGames &&
             filteredGames.map((game, i) => {
@@ -60,7 +61,7 @@ const Content = ({ data, loading, toggleModal }) => {
 
   return (
     <div className="Content">
-      {renderContentBody(history.location.pathname.slice(1))}
+      {renderContentBody(history.location.pathname.split("/")[2])} {/* "/panel/all" =>> all */}
     </div>
   );
 };

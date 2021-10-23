@@ -1,14 +1,28 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = ({handleActiveBar, data}) => {
+  const listGroupItems = [
+    "Панель матчей",
+    "Избранное",
+    "Сохраненные",
+    "Удаленные",
+  ];
+  const listGroupItemsRoutes = ["panel/all", "favorites", "saved", "deleted"];
+
   return (
     <div className="Sidebar">
       <div className="card">
         <ul className="list-group list-group-flush">
-          <li className="list-group-item active">Панель матчей</li>
-          <li className="list-group-item">Избранное</li>
-          <li className="list-group-item">Сохраненные</li>
-          <li className="list-group-item">Удаленные</li>
+          {listGroupItems.map((item, i) => {
+            let listItemStyle = data.activeBar === i ? "list-group-item active" : "list-group-item";
+
+            return (
+              <Link className={listItemStyle} key={i} to={`/${listGroupItemsRoutes[i]}`} onClick={() => handleActiveBar(i)}>
+                {item}
+              </Link>
+            );
+          })}
         </ul>
       </div>
     </div>

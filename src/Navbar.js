@@ -4,7 +4,7 @@ import Content from "./Content";
 
 const Navbar = ({ updateData, data, loading, handleActiveTab, toggleModal }) => {
   const navItems = ["Все матчи", "Онлайн", "Завершенные"];
-  const navItemsRoutes = ["/", "online", "finished"];
+  const navItemsRoutes = ["all", "online", "finished"];
 
   return (
     <div className="Navbar">
@@ -18,7 +18,7 @@ const Navbar = ({ updateData, data, loading, handleActiveTab, toggleModal }) => 
                 <li className="nav-item" key={i}>
                   <Link
                     className={navItemStyle}
-                    to={navItemsRoutes[i]}
+                    to={`/panel/${navItemsRoutes[i]}`}
                     onClick={() => handleActiveTab(i)}
                   >
                     {navItem}
