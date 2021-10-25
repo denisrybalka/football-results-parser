@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import CardBody from "./CardBody";
 import Loader from "./Loader";
 
 const Content = ({ data, loading, toggleModal }) => {
@@ -36,22 +37,7 @@ const Content = ({ data, loading, toggleModal }) => {
           ) : (
             filteredGames &&
             filteredGames.map((game, i) => {
-              return (
-                <div className="col" key={i}>
-                  <div className="card h-100">
-                    <div
-                      className="card-body game-block"
-                      onClick={() => toggleModal(true, game)}
-                    >
-                      <h5 className="card-title">{`${game["play__team-1"]} - ${game["play__team-2"]}`}</h5>
-                      <p className="card-text">{game.play__time}</p>
-                    </div>
-                    <div className="card-footer">
-                      <small className="text-muted">{game.play__result}</small>
-                    </div>
-                  </div>
-                </div>
-              );
+              return <CardBody toggleModal={toggleModal} game={game} key={i}/>;
             })
           )}
         </div>
@@ -61,7 +47,8 @@ const Content = ({ data, loading, toggleModal }) => {
 
   return (
     <div className="Content">
-      {renderContentBody(history.location.pathname.split("/")[2])} {/* "/panel/all" =>> all */}
+      {renderContentBody(history.location.pathname.split("/")[2])}{" "}
+      {/* "/panel/all" =>> all */}
     </div>
   );
 };

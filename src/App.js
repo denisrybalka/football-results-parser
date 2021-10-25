@@ -17,6 +17,7 @@ const App = () => {
     activeTab: 0,
     activeBar: 0,
     modalActiveGame: null,
+    saved: [],
   });
   const [loading, setLoading] = React.useState(false);
   const [modal, setModal] = React.useState(false);
@@ -24,12 +25,15 @@ const App = () => {
   React.useEffect(() => {
     const localData = JSON.parse(localStorage.getItem("data"));
     const lastUpdate = JSON.parse(localStorage.getItem("lastUpdate"));
-    if (localData && lastUpdate) {
+    const saved = JSON.parse(localStorage.getItem("saved") || "[]");
+    
+    if (localData && lastUpdate && saved) {
       setData((state) => {
         return {
           ...state,
           games: localData,
           updateTime: lastUpdate,
+          saved,
         };
       });
     }
@@ -92,6 +96,9 @@ const App = () => {
   };
 
   const toggleModal = (isToggleModal, game = null) => {
+    if (!isToggleModal) {
+      setLoading(false);
+    }
     setModal(isToggleModal);
     setData((state) => {
       return {
@@ -140,6 +147,23 @@ const App = () => {
     }
   };
 
+  const addToSaved = (game) => {
+    const idx = data.saved.findIndex((g) => g.statistic === game.statistic);
+
+    if (idx === -1) {
+      localStorage.setItem("saved", JSON.stringify([...data.saved, game]));
+      setData((state) => {
+        return {
+          ...state,
+          saved: [...state.saved, game],
+        };
+      });
+      alert("Добавлено в сохраненные!");
+    } else {
+      alert("Уже в сохраненных!");
+    }
+  };
+
   return (
     <div className="App">
       <div className="card main-block">
@@ -159,7 +183,7 @@ const App = () => {
               <Favorites />
             </Route>
             <Route exact path="/saved">
-              <Saved />
+              <Saved data={data}/>
             </Route>
             <Route exact path="/deleted">
               <Deleted />
@@ -172,7 +196,8 @@ const App = () => {
         toggleModal={toggleModal}
         data={data}
         loading={loading}
-      />
+        addToSaved={addToSaved}
+      /> 
     </div>
   );
 };

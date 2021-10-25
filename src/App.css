@@ -91,3 +91,7 @@
 .goals-block__goal {
   margin: 10px 0px;
 }
+
+.btn-block {
+  margin-left: auto;
+}

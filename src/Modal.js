@@ -1,7 +1,7 @@
 import React from "react";
 import Loader from "./Loader";
 
-const Modal = ({ isToggleModal, toggleModal, data, loading }) => {
+const Modal = ({ isToggleModal, toggleModal, data, loading, addToSaved }) => {
   const { modalActiveGame: game } = data;
 
   return (
@@ -12,6 +12,7 @@ const Modal = ({ isToggleModal, toggleModal, data, loading }) => {
       <div className="modal-dialog modal-dialog-centered modal-lg">
         <div className="modal-content">
           <div className="modal-header">
+            <div className="modal-title text-muted">{game && game.championship}</div>
             <button
               type="button"
               className="btn btn-close"
@@ -24,7 +25,7 @@ const Modal = ({ isToggleModal, toggleModal, data, loading }) => {
             <div className="modal-body">
               <div className="header-wrap">
                 <div className="header-team">
-                  <img className="header-team__logo" src={game && game.additionalStatistic.images[0]}/>
+                  <img className="header-team__logo" src={game && game.additionalStatistic.images[0]} alt="team-logo1"/>
                   <div className="header-team__name">
                     {game && game["play__team-1"]}
                   </div>
@@ -34,7 +35,7 @@ const Modal = ({ isToggleModal, toggleModal, data, loading }) => {
                   <div className="header-team__name">
                     {game && game["play__team-2"]}
                   </div>
-                  <img className="header-team__logo" src={game &&game.additionalStatistic.images[1]}/>
+                  <img className="header-team__logo" src={game &&game.additionalStatistic.images[1]} alt="team-logo2"/>
                 </div>
               </div>
               <div className="goals-wrap">
@@ -63,23 +64,18 @@ const Modal = ({ isToggleModal, toggleModal, data, loading }) => {
               type="button"
               className="btn btn-success"
               data-toggle="tooltip"
-              title="Сохранить в избранное"
+              title="Добавить в сохраненные"
+              onClick={() => addToSaved(data.modalActiveGame)}
+              disabled={loading}
             >
               Сохранить
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              data-toggle="tooltip"
-              title="Отслеживать ход матча"
-            >
-              Следить
             </button>
             <button
               type="button"
               className="btn btn-danger"
               data-toggle="tooltip"
               title="Удалить матч из панели"
+              disabled={loading}
             >
               Удалить
             </button>
@@ -87,6 +83,7 @@ const Modal = ({ isToggleModal, toggleModal, data, loading }) => {
               type="button"
               className="btn btn-secondary"
               onClick={() => toggleModal(false)}
+              disabled={loading}
             >
               Закрыть
             </button>

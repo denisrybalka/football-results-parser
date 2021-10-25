@@ -2,7 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Content from "./Content";
 
-const Navbar = ({ updateData, data, loading, handleActiveTab, toggleModal }) => {
+const Navbar = ({
+  updateData,
+  data,
+  loading,
+  handleActiveTab,
+  toggleModal,
+}) => {
   const navItems = ["Все матчи", "Онлайн", "Завершенные"];
   const navItemsRoutes = ["all", "online", "finished"];
 
@@ -27,25 +33,32 @@ const Navbar = ({ updateData, data, loading, handleActiveTab, toggleModal }) => 
               );
             })}
 
-            <button
-              className="btn btn-success updateData-btn"
-              onClick={updateData}
-              disabled={loading && !data.modalActiveGame}
-            >
-              <span
-                className="spinner-border spinner-border-sm"
-                role="status"
-                aria-hidden="true"
-                style={{
-                  marginRight: "10px",
-                  display: loading && !data.modalActiveGame ? "inline-block" : "none",
-                }}
-              ></span>
-              {loading && !data.modalActiveGame ? "Обновление данных..." : "Обновить данные"}
-            </button>
+            <div className="btn-block">
+              <button
+                className="btn btn-success updateData-btn"
+                onClick={updateData}
+                disabled={loading && !data.modalActiveGame}
+              >
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                  style={{
+                    marginRight: "10px",
+                    display:
+                      loading && !data.modalActiveGame
+                        ? "inline-block"
+                        : "none",
+                  }}
+                ></span>
+                {loading && !data.modalActiveGame
+                  ? "Обновление данных..."
+                  : "Обновить данные"}
+              </button>
+            </div>
           </ul>
         </div>
-        <Content data={data} loading={loading} toggleModal={toggleModal}/>
+        <Content data={data} loading={loading} toggleModal={toggleModal} />
       </div>
     </div>
   );
