@@ -6,9 +6,10 @@ import Modal from "./Modal";
 import Favorites from "./Favorites";
 import Saved from "./Saved";
 import Deleted from "./Deleted";
+import Team from "./Team";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Route, Switch } from "react-router";
+import { Route, Switch } from "react-router-dom";
 
 const url = "http://localhost:3001";
 
@@ -18,6 +19,10 @@ const App = () => {
     activeBar: 0,
     modalActiveGame: null,
     saved: [],
+    favorites: [],
+    teamInfo: null,
+    actualDate: new Date(Date.now()),
+    deleted: [],
   });
   const [loading, setLoading] = React.useState(false);
   const [modal, setModal] = React.useState(false);
@@ -26,14 +31,17 @@ const App = () => {
     const localData = JSON.parse(localStorage.getItem("data"));
     const lastUpdate = JSON.parse(localStorage.getItem("lastUpdate"));
     const saved = JSON.parse(localStorage.getItem("saved") || "[]");
-    
+    const deleted = JSON.parse(localStorage.getItem("deleted") || "[]");
+
     if (localData && lastUpdate && saved) {
       setData((state) => {
         return {
           ...state,
           games: localData,
           updateTime: lastUpdate,
+          actualDate: new Date(Date.now()),
           saved,
+          deleted,
         };
       });
     }
@@ -41,8 +49,9 @@ const App = () => {
 
   const updateData = () => {
     setLoading(true);
+    const date = `${data.actualDate.getDate()}.${data.actualDate.getMonth()+1}.${data.actualDate.getFullYear()}`;
     axios
-      .get(`${url}/getData`)
+      .get(`${url}/getData/${date}`)
       .then(({ data }) => {
         const lastUpdate = Date.now();
         localStorage.setItem(
@@ -163,6 +172,60 @@ const App = () => {
       alert("Уже в сохраненных!");
     }
   };
+  
+  const addToHidden = (game) => {
+    const idx = data.deleted.findIndex((g) => g.statistic === game.statistic);
+
+    if (idx === -1) {
+      localStorage.setItem("deleted", JSON.stringify([...data.deleted, game]));
+      setData((state) => {
+        return {
+          ...state,
+          deleted: [...state.deleted, game],
+        };
+      });
+      toggleModal(false);
+    }
+  }
+
+  const getTeamInfo = (teamId) => {
+    setLoading(true);
+    axios
+      .get(`${url}/getTeamData/${teamId}`)
+      .then(({ data }) => {
+        setData((state) => {
+          return {
+            ...state,
+            teamInfo: data,
+          };
+        });
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const removeTeamInfo = () => {
+    setData((state) => {
+      return {
+        ...state,
+        teamInfo: null,
+      };
+    });
+  };
+
+  const changeActualDate = (value) => {
+    const d = data.actualDate.setDate(data.actualDate.getDate() + value);
+    setData((state) => {
+      return {
+        ...state,
+        actualDate: new Date(d),
+      };
+    });
+  };
 
   return (
     <div className="App">
@@ -177,16 +240,25 @@ const App = () => {
                 loading={loading}
                 handleActiveTab={handleActiveTab}
                 toggleModal={toggleModal}
+                changeActualDate={changeActualDate}
               />
             </Route>
             <Route exact path="/favorites">
               <Favorites />
             </Route>
             <Route exact path="/saved">
-              <Saved data={data}/>
+              <Saved data={data} toggleModal={toggleModal}/>
             </Route>
             <Route exact path="/deleted">
-              <Deleted />
+              <Deleted data={data} toggleModal={toggleModal}/>
+            </Route>
+            <Route exact path="/team/:id">
+              <Team
+                getTeamInfo={getTeamInfo}
+                teamInfo={data.teamInfo}
+                loading={loading}
+                removeTeamInfo={removeTeamInfo}
+              />
             </Route>
           </Switch>
         </div>
@@ -197,7 +269,8 @@ const App = () => {
         data={data}
         loading={loading}
         addToSaved={addToSaved}
-      /> 
+        addToHidden={addToHidden}
+      />
     </div>
   );
 };

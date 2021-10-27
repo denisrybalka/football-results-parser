@@ -1,7 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Loader from "./Loader";
 
-const Modal = ({ isToggleModal, toggleModal, data, loading, addToSaved }) => {
+const Modal = ({ isToggleModal, toggleModal, data, loading, addToSaved, addToHidden }) => {
   const { modalActiveGame: game } = data;
 
   return (
@@ -12,7 +13,9 @@ const Modal = ({ isToggleModal, toggleModal, data, loading, addToSaved }) => {
       <div className="modal-dialog modal-dialog-centered modal-lg">
         <div className="modal-content">
           <div className="modal-header">
-            <div className="modal-title text-muted">{game && game.championship}</div>
+            <div className="modal-title text-muted">
+              {game && game.championship}
+            </div>
             <button
               type="button"
               className="btn btn-close"
@@ -25,17 +28,41 @@ const Modal = ({ isToggleModal, toggleModal, data, loading, addToSaved }) => {
             <div className="modal-body">
               <div className="header-wrap">
                 <div className="header-team">
-                  <img className="header-team__logo" src={game && game.additionalStatistic.images[0]} alt="team-logo1"/>
-                  <div className="header-team__name">
+                  <img
+                    className="header-team__logo"
+                    src={game && game.additionalStatistic.images[0]}
+                    alt="team-logo1"
+                  />
+                  <Link
+                    className="header-team__name"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Перейти на страницу команды"
+                    to={`/team/${game && game.additionalStatistic.id[0]}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {game && game["play__team-1"]}
-                  </div>
+                  </Link>
                 </div>
                 <div className="header-score">{game && game.play__result}</div>
                 <div className="header-team">
-                  <div className="header-team__name">
+                  <Link
+                    className="header-team__name"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Перейти на страницу команды"
+                    to={`/team/${game && game.additionalStatistic.id[1]}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {game && game["play__team-2"]}
-                  </div>
-                  <img className="header-team__logo" src={game &&game.additionalStatistic.images[1]} alt="team-logo2"/>
+                  </Link>
+                  <img
+                    className="header-team__logo"
+                    src={game && game.additionalStatistic.images[1]}
+                    alt="team-logo2"
+                  />
                 </div>
               </div>
               <div className="goals-wrap">
@@ -76,6 +103,7 @@ const Modal = ({ isToggleModal, toggleModal, data, loading, addToSaved }) => {
               data-toggle="tooltip"
               title="Удалить матч из панели"
               disabled={loading}
+              onClick={() => addToHidden(data.modalActiveGame)}
             >
               Удалить
             </button>

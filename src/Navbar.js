@@ -8,10 +8,11 @@ const Navbar = ({
   loading,
   handleActiveTab,
   toggleModal,
+  changeActualDate
 }) => {
   const navItems = ["Все матчи", "Онлайн", "Завершенные"];
   const navItemsRoutes = ["all", "online", "finished"];
-
+  
   return (
     <div className="Navbar">
       <div className="card text-center">
@@ -34,6 +35,9 @@ const Navbar = ({
             })}
 
             <div className="btn-block">
+              <button className="btn btn-primary date-btn changeDate-btn-1" onClick={() => changeActualDate(-1)}>{`<`}</button>
+              <button className="btn btn-primary date-btn nav-btn">{`${data.actualDate.getDate()}.${data.actualDate.getMonth()+1}`}</button>
+              <button className="btn btn-primary date-btn changeDate-btn-2" onClick={() => changeActualDate(1)}>{`>`}</button>
               <button
                 className="btn btn-success updateData-btn"
                 onClick={updateData}

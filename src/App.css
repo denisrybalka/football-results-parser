@@ -65,7 +65,13 @@
 }
 
 .header-team__name {
+  text-decoration: none;
   font-weight: bold;
+}
+
+.header-team__name:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .header-team__logo {
@@ -94,4 +100,39 @@
 
 .btn-block {
   margin-left: auto;
+}
+
+.Team {
+  width: fit-content;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.Team .card-img-top {
+  width: 100px;
+  height: 100px;
+}
+
+.nav-btn {
+  border-radius: 0px !important;
+}
+
+.changeDate-btn-2 {
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  margin-right: 5px;
+}
+
+.changeDate-btn-1 {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
+.Saved {
+  width: 100%;
+  text-align: center;
+}
+
+.col {
+  height: fit-content;
 }

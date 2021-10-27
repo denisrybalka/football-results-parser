@@ -1,6 +1,6 @@
 import React from "react";
 
-const Loader = ({height}) => {
+const Loader = ({ height }) => {
   return (
     <div
       className="d-flex justify-content-center"

@@ -5,11 +5,14 @@ import Loader from "./Loader";
 
 const Content = ({ data, loading, toggleModal }) => {
   const parsedDate = new Date(data.updateTime);
-  const normalDate = `${parsedDate.getHours()}:${parsedDate.getMinutes()}`;
+  const minutes = parsedDate.getMinutes();
+  const hours = parsedDate.getHours();
+  const normalDate = `${hours}:${minutes < 10 ? `0${minutes}` : minutes}`;
   const history = useHistory();
 
   const renderContentBody = (filterValue) => {
     let filteredGames = data.games ? [...data.games] : [];
+    filteredGames = filteredGames.filter((game) => data.deleted.findIndex(g => g.statistic === game.statistic) === -1);
 
     if (filterValue === "online") {
       filteredGames = filteredGames.filter(

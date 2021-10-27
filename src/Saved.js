@@ -1,15 +1,12 @@
 import React from "react";
+import CardBody from "./CardBody";
 
-const Saved = ({ data }) => {
+const Saved = ({ data, toggleModal }) => {
   return (
-    <div>
+    <div className="row row-cols-1 row-cols-md-2 g-3 Saved">
       {data.saved &&
-        data.saved.map((game) => {
-          return (
-            <div>
-              {`${game["play__team-1"]} ${game.play__result} ${game["play__team-2"]}`}
-            </div>
-          );
+        data.saved.map((game, i) => {
+          return <CardBody toggleModal={toggleModal} game={game} key={i}/>
         })}
     </div>
   );

@@ -2,8 +2,8 @@ import React from "react";
 
 const CardBody = ({ toggleModal, game }) => {
   const championship = game.championship;
-  let color = championship.split(",").slice(0, -1).join(",");
-  let style = "";
+  let splittedColor = championship.split(",")
+  let color = splittedColor.length > 2 ? splittedColor.slice(0, -1).join(",") : splittedColor.join(",")
 
   const championshipColors = {
     "Чемпионат Англии, Премьер-лига": ["purple", "white"],
@@ -12,6 +12,9 @@ const CardBody = ({ toggleModal, game }) => {
     "Чемпионат Италии, Серия А": ["#008fd7", "white"],
     "Чемпионат Франции, Лига 1": ["#dae025", "#12233f"],
     "Чемпионат Украины, Премьер-лига": ["white", "skyblue"],
+    "Лига Чемпионов 2021/2022": ["#030961","white"],
+    "Лига Европы 2021/2022": ["orange", "black"],
+    "Лига конференций 2021/2022": ["lime", "black"]
   };
 
   return (
