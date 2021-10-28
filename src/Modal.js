@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Loader from "./Loader";
+import {BiFootball} from 'react-icons/bi'
 
 const Modal = ({ isToggleModal, toggleModal, data, loading, addToSaved, addToHidden }) => {
   const { modalActiveGame: game } = data;
@@ -76,7 +77,7 @@ const Modal = ({ isToggleModal, toggleModal, data, loading, addToSaved, addToHid
                               <div
                                 className="goals-block__goal"
                                 key={j}
-                              >{`${goal.player} ${goal.minute}`}</div>
+                              ><BiFootball/>{` ${goal.player} ${goal.minute}`}</div>
                             );
                           }
                         )}

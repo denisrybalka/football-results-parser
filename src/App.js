@@ -105,6 +105,7 @@ const App = () => {
   };
 
   const toggleModal = (isToggleModal, game = null) => {
+
     if (!isToggleModal) {
       setLoading(false);
     }
@@ -241,6 +242,7 @@ const App = () => {
                 handleActiveTab={handleActiveTab}
                 toggleModal={toggleModal}
                 changeActualDate={changeActualDate}
+                addToHidden={addToHidden}
               />
             </Route>
             <Route exact path="/favorites">

@@ -8,7 +8,8 @@ const Navbar = ({
   loading,
   handleActiveTab,
   toggleModal,
-  changeActualDate
+  changeActualDate,
+  addToHidden
 }) => {
   const navItems = ["Все матчи", "Онлайн", "Завершенные"];
   const navItemsRoutes = ["all", "online", "finished"];
@@ -62,7 +63,7 @@ const Navbar = ({
             </div>
           </ul>
         </div>
-        <Content data={data} loading={loading} toggleModal={toggleModal} />
+        <Content data={data} loading={loading} toggleModal={toggleModal} addToHidden={addToHidden}/>
       </div>
     </div>
   );

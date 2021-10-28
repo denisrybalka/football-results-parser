@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import CardBody from "./CardBody";
 import Loader from "./Loader";
 
-const Content = ({ data, loading, toggleModal }) => {
+const Content = ({ data, loading, toggleModal, addToHidden }) => {
   const parsedDate = new Date(data.updateTime);
   const minutes = parsedDate.getMinutes();
   const hours = parsedDate.getHours();
@@ -40,7 +40,7 @@ const Content = ({ data, loading, toggleModal }) => {
           ) : (
             filteredGames &&
             filteredGames.map((game, i) => {
-              return <CardBody toggleModal={toggleModal} game={game} key={i}/>;
+              return <CardBody toggleModal={toggleModal} game={game} addToHidden={addToHidden} key={i}/>;
             })
           )}
         </div>
