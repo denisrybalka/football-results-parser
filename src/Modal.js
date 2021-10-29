@@ -1,10 +1,38 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Loader from "./Loader";
-import {BiFootball} from 'react-icons/bi'
+import { BiFootball } from "react-icons/bi";
 
-const Modal = ({ isToggleModal, toggleModal, data, loading, addToSaved, addToHidden }) => {
+const Modal = ({
+  isToggleModal,
+  toggleModal,
+  data,
+  loading,
+  addToSaved,
+  addToHidden,
+}) => {
   const { modalActiveGame: game } = data;
+
+  const copyToClipboard = () => {
+    let goals = game.additionalStatistic.goals["team-1"].concat(game.additionalStatistic.goals["team-2"]);
+    
+    goals.sort((a,b) => a.minute.slice(1) - b.minute.slice(1))
+
+    goals = goals.map((el) => {
+      let player = el.player.replace(/\s+/g, ' ').trim();
+      if (player.split(" ").filter(a => a === "пенальти").length > 0) {
+        player = player.split(" ").slice(0, -2).concat("(пен)").join(" ");
+      }
+      return {
+        ...el,
+        player,
+      }
+    })
+    const info = `${goals.map(el => `⚽️ ${el.player}, ${el.minute}\n`).join("")}`;
+
+    navigator.clipboard.writeText(info);
+    alert("Скопировано в буфер обмена!")
+  }
 
   return (
     <div
@@ -74,10 +102,10 @@ const Modal = ({ isToggleModal, toggleModal, data, loading, addToSaved, addToHid
                         game.additionalStatistic.goals[`team-${i + 1}`].map(
                           (goal, j) => {
                             return (
-                              <div
-                                className="goals-block__goal"
-                                key={j}
-                              ><BiFootball/>{` ${goal.player} ${goal.minute}`}</div>
+                              <div className="goals-block__goal" key={j}>
+                                {goal.player && <BiFootball />}
+                                {` ${goal.player} ${goal.minute}`}
+                              </div>
                             );
                           }
                         )}
@@ -85,6 +113,7 @@ const Modal = ({ isToggleModal, toggleModal, data, loading, addToSaved, addToHid
                   );
                 })}
               </div>
+              <button className="btn btn-link btn-copy" onClick={copyToClipboard}>Копировать</button>
             </div>
           )}
           <div className="modal-footer">
@@ -100,17 +129,7 @@ const Modal = ({ isToggleModal, toggleModal, data, loading, addToSaved, addToHid
             </button>
             <button
               type="button"
-              className="btn btn-danger"
-              data-toggle="tooltip"
-              title="Удалить матч из панели"
-              disabled={loading}
-              onClick={() => addToHidden(data.modalActiveGame)}
-            >
-              Удалить
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary"
+              className="btn btn-light"
               onClick={() => toggleModal(false)}
               disabled={loading}
             >
