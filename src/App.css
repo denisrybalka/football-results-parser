@@ -137,13 +137,21 @@
   height: fit-content;
 }
 
-.card-title {
+.btn-copy {
+  display: block !important;
+  margin: 0px auto;
+}
+
+.card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.btn-copy {
-  display: block !important;
-  margin: 0px auto;
+.hide-btn, .save-btn {
+  cursor: pointer;
+}
+
+.save-btn {
+  margin-left: 5px;
 }

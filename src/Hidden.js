@@ -1,7 +1,7 @@
 import React from "react";
 import CardBody from "./CardBody";
 
-const Saved = ({
+const Hidden = ({
   data,
   toggleModal,
   addToHidden,
@@ -12,7 +12,7 @@ const Saved = ({
   return (
     <div className="row row-cols-1 row-cols-md-2 g-3 Saved">
       {data.saved &&
-        data.saved.map((game, i) => {
+        data.hidden.map((game, i) => {
           return (
             <CardBody
               toggleModal={toggleModal}
@@ -31,4 +31,4 @@ const Saved = ({
   );
 };
 
-export default Saved;
+export default Hidden;

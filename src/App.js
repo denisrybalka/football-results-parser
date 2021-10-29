@@ -3,9 +3,9 @@ import axios from "axios";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import Modal from "./Modal";
-import Favorites from "./Favorites";
+import Championships from "./Championships";
 import Saved from "./Saved";
-import Deleted from "./Deleted";
+import Hidden from "./Hidden";
 import Team from "./Team";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,7 +22,7 @@ const App = () => {
     favorites: [],
     teamInfo: null,
     actualDate: new Date(Date.now()),
-    deleted: [],
+    hidden: [],
   });
   const [loading, setLoading] = React.useState(false);
   const [modal, setModal] = React.useState(false);
@@ -31,7 +31,7 @@ const App = () => {
     const localData = JSON.parse(localStorage.getItem("data"));
     const lastUpdate = JSON.parse(localStorage.getItem("lastUpdate"));
     const saved = JSON.parse(localStorage.getItem("saved") || "[]");
-    const deleted = JSON.parse(localStorage.getItem("deleted") || "[]");
+    const hidden = JSON.parse(localStorage.getItem("hidden") || "[]");
 
     if (localData && lastUpdate && saved) {
       setData((state) => {
@@ -41,7 +41,7 @@ const App = () => {
           updateTime: lastUpdate,
           actualDate: new Date(Date.now()),
           saved,
-          deleted,
+          hidden,
         };
       });
     }
@@ -49,7 +49,9 @@ const App = () => {
 
   const updateData = () => {
     setLoading(true);
-    const date = `${data.actualDate.getDate()}.${data.actualDate.getMonth()+1}.${data.actualDate.getFullYear()}`;
+    const date = `${data.actualDate.getDate()}.${
+      data.actualDate.getMonth() + 1
+    }.${data.actualDate.getFullYear()}`;
     axios
       .get(`${url}/getData/${date}`)
       .then(({ data }) => {
@@ -105,7 +107,6 @@ const App = () => {
   };
 
   const toggleModal = (isToggleModal, game = null) => {
-
     if (!isToggleModal) {
       setLoading(false);
     }
@@ -168,24 +169,57 @@ const App = () => {
           saved: [...state.saved, game],
         };
       });
-      alert("Добавлено в сохраненные!");
-    } else {
-      alert("Уже в сохраненных!");
     }
   };
-  
-  const addToHidden = (game) => {
-    const idx = data.deleted.findIndex((g) => g.statistic === game.statistic);
 
-    if (idx === -1) {
-      localStorage.setItem("deleted", JSON.stringify([...data.deleted, game]));
+  const removeFromSaved = (game) => {
+    const idx = data.saved.findIndex((g) => g.statistic === game.statistic);
+
+    if (idx !== -1) {
+      const filteredSaved = data.saved.filter(
+        (g) => g.statistic !== game.statistic
+      );
+
+      localStorage.setItem("saved", JSON.stringify(filteredSaved));
       setData((state) => {
         return {
           ...state,
-          deleted: [...state.deleted, game],
+          saved: filteredSaved,
+        };
+      });
+    }
+  };
+
+  const addToHidden = (game) => {
+    const idx = data.hidden.findIndex((g) => g.statistic === game.statistic);
+
+    if (idx === -1) {
+      localStorage.setItem("hidden", JSON.stringify([...data.hidden, game]));
+      setData((state) => {
+        return {
+          ...state,
+          hidden: [...state.hidden, game],
         };
       });
       toggleModal(false);
+    }
+  };
+
+  const removeFromHidden = (game) => {
+    const idx = data.hidden.findIndex((g) => g.statistic === game.statistic);
+
+    if (idx !== -1) {
+      const filteredHidden = data.hidden.filter(
+        (g) => g.statistic !== game.statistic
+      );
+
+      localStorage.setItem("hidden", JSON.stringify(filteredHidden));
+      setData((state) => {
+        return {
+          ...state,
+          hidden: filteredHidden,
+        };
+      });
     }
   }
 
@@ -243,16 +277,35 @@ const App = () => {
                 toggleModal={toggleModal}
                 changeActualDate={changeActualDate}
                 addToHidden={addToHidden}
+                addToSaved={addToSaved}
+                removeFromSaved={removeFromSaved}
+                removeFromHidden={removeFromHidden}
               />
             </Route>
-            <Route exact path="/favorites">
-              <Favorites />
+            <Route exact path="/championships">
+              <Championships />
             </Route>
             <Route exact path="/saved">
-              <Saved data={data} toggleModal={toggleModal}/>
+              <Saved
+                data={data}
+                loading={loading}
+                toggleModal={toggleModal}
+                addToHidden={addToHidden}
+                addToSaved={addToSaved}
+                removeFromSaved={removeFromSaved}
+                removeFromHidden={removeFromHidden}
+              />
             </Route>
-            <Route exact path="/deleted">
-              <Deleted data={data} toggleModal={toggleModal}/>
+            <Route exact path="/hidden">
+              <Hidden
+                data={data}
+                loading={loading}
+                toggleModal={toggleModal}
+                addToHidden={addToHidden}
+                addToSaved={addToSaved}
+                removeFromSaved={removeFromSaved}
+                removeFromHidden={removeFromHidden}
+              />
             </Route>
             <Route exact path="/team/:id">
               <Team

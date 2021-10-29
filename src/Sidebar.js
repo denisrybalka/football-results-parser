@@ -5,11 +5,11 @@ import { useHistory } from "react-router";
 const Sidebar = ({handleActiveBar, data}) => {
   const listGroupItems = [
     "Панель матчей",
-    "Избранное",
+    "Панель чемпионатов",
     "Сохраненные",
-    "Удаленные",
+    "Скрытые",
   ];
-  const listGroupItemsRoutes = ["panel/all", "favorites", "saved", "deleted"];
+  const listGroupItemsRoutes = ["panel/all", "championships", "saved", "hidden"];
   const history = useHistory();
   const isSidebarHidden = history.location.pathname.split("/").findIndex(a => a === "team") !== -1 || data.teamInfo !== null;
 

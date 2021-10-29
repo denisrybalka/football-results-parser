@@ -3,7 +3,15 @@ import { useHistory } from "react-router-dom";
 import CardBody from "./CardBody";
 import Loader from "./Loader";
 
-const Content = ({ data, loading, toggleModal, addToHidden }) => {
+const Content = ({
+  data,
+  loading,
+  toggleModal,
+  addToHidden,
+  addToSaved,
+  removeFromSaved,
+  removeFromHidden
+}) => {
   const parsedDate = new Date(data.updateTime);
   const minutes = parsedDate.getMinutes();
   const hours = parsedDate.getHours();
@@ -12,7 +20,10 @@ const Content = ({ data, loading, toggleModal, addToHidden }) => {
 
   const renderContentBody = (filterValue) => {
     let filteredGames = data.games ? [...data.games] : [];
-    filteredGames = filteredGames.filter((game) => data.deleted.findIndex(g => g.statistic === game.statistic) === -1);
+    filteredGames = filteredGames.filter(
+      (game) =>
+        data.hidden.findIndex((g) => g.statistic === game.statistic) === -1
+    );
 
     if (filterValue === "online") {
       filteredGames = filteredGames.filter(
@@ -40,7 +51,19 @@ const Content = ({ data, loading, toggleModal, addToHidden }) => {
           ) : (
             filteredGames &&
             filteredGames.map((game, i) => {
-              return <CardBody toggleModal={toggleModal} game={game} addToHidden={addToHidden} key={i}/>;
+              return (
+                <CardBody
+                  toggleModal={toggleModal}
+                  game={game}
+                  addToHidden={addToHidden}
+                  addToSaved={addToSaved}
+                  removeFromSaved={removeFromSaved}
+                  removeFromHidden={removeFromHidden}
+                  saved={data.saved}
+                  hidden={data.hidden}
+                  key={i}
+                />
+              );
             })
           )}
         </div>

@@ -1,7 +1,17 @@
 import React from "react";
-import { BsEyeSlash, BsInfoSquare } from "react-icons/bs";
+import { BsEyeSlash, BsEye, BsInfoSquare } from "react-icons/bs";
+import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
-const CardBody = ({ toggleModal, game, addToHidden }) => {
+const CardBody = ({
+  toggleModal,
+  game,
+  addToHidden,
+  saved,
+  hidden,
+  addToSaved,
+  removeFromSaved,
+  removeFromHidden,
+}) => {
   const championship = game.championship;
   let splittedColor = championship.split(",");
   let color =
@@ -21,6 +31,12 @@ const CardBody = ({ toggleModal, game, addToHidden }) => {
     "Лига конференций 2021/2022": ["lime", "black"],
   };
 
+  const isSaved =
+    saved && saved.findIndex((a) => game.statistic === a.statistic) !== -1;
+
+  const isHidden =
+    hidden && hidden.findIndex((a) => game.statistic === a.statistic) !== -1;
+
   return (
     <div className="col">
       <div
@@ -30,6 +46,7 @@ const CardBody = ({ toggleModal, game, addToHidden }) => {
             game && championshipColors[color] && championshipColors[color][0],
           color:
             game && championshipColors[color] && championshipColors[color][1],
+          border: isSaved && "1px ridge rgba(170, 50, 220, .6)",
         }}
       >
         <div
@@ -37,24 +54,53 @@ const CardBody = ({ toggleModal, game, addToHidden }) => {
           onClick={() => toggleModal(true, game)}
         >
           <div className="card-title">
-            <BsInfoSquare
-              data-bs-toggle="tooltip"
-              data-bs-placement="top"
-              title={game && game.championship}
-            />
             <h5 className="card-title__text">{`${game["play__team-1"]} - ${game["play__team-2"]}`}</h5>
-            
-            <BsEyeSlash
-              data-bs-toggle="tooltip"
-              data-bs-placement="top"
-              title="Скрыть матч из панели"
-              onClick={() => addToHidden(game)}
-            />
           </div>
           <p className="card-text">{game.play__time}</p>
         </div>
         <div className="card-footer">
+          <BsInfoSquare
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title={game && game.championship}
+          />
           <small>{game.play__result}</small>
+          <div>
+            {!isHidden ? (
+              <BsEyeSlash
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Скрыть матч из панели"
+                className="hide-btn"
+                onClick={() => addToHidden(game)}
+              />
+            ) : (
+              <BsEye
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Убрать из скрытых"
+                className="hide-btn"
+                onClick={() => removeFromHidden(game)}
+              />
+            )}
+            {isSaved ? (
+              <AiFillStar
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Убрать из сохраненных"
+                className="save-btn"
+                onClick={() => removeFromSaved(game)}
+              />
+            ) : (
+              <AiOutlineStar
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Добавить в сохраненные"
+                className="save-btn"
+                onClick={() => addToSaved(game)}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
