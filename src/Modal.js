@@ -3,35 +3,33 @@ import { Link } from "react-router-dom";
 import Loader from "./Loader";
 import { BiFootball } from "react-icons/bi";
 
-const Modal = ({
-  isToggleModal,
-  toggleModal,
-  data,
-  loading,
-  addToSaved,
-}) => {
+const Modal = ({ isToggleModal, toggleModal, data, loading, addToSaved }) => {
   const { modalActiveGame: game } = data;
 
   const copyToClipboard = () => {
-    let goals = game.additionalStatistic.goals["team-1"].concat(game.additionalStatistic.goals["team-2"]);
-    
-    goals.sort((a,b) => a.minute.slice(1) - b.minute.slice(1))
+    let goals = game.additionalStatistic.goals["team-1"].concat(
+      game.additionalStatistic.goals["team-2"]
+    );
+
+    goals.sort((a, b) => a.minute.slice(1) - b.minute.slice(1));
 
     goals = goals.map((el) => {
-      let player = el.player.replace(/\s+/g, ' ').trim();
-      if (player.split(" ").filter(a => a === "пенальти").length > 0) {
+      let player = el.player.replace(/\s+/g, " ").trim();
+      if (player.split(" ").filter((a) => a === "пенальти").length > 0) {
         player = player.split(" ").slice(0, -2).concat("(пен)").join(" ");
       }
       return {
         ...el,
         player,
-      }
-    })
-    const info = `${goals.map(el => `⚽️ ${el.player}, ${el.minute}\n`).join("")}`;
+      };
+    });
+    const info = `${goals
+      .map((el) => `⚽️ ${el.player}, ${el.minute}\n`)
+      .join("")}`;
 
     navigator.clipboard.writeText(info);
-    alert("Скопировано в буфер обмена!")
-  }
+    alert("Скопировано в буфер обмена!");
+  };
 
   return (
     <div
@@ -112,7 +110,12 @@ const Modal = ({
                   );
                 })}
               </div>
-              <button className="btn btn-link btn-copy" onClick={copyToClipboard}>Копировать</button>
+              <button
+                className="btn btn-link btn-copy"
+                onClick={copyToClipboard}
+              >
+                Копировать
+              </button>
             </div>
           )}
           <div className="modal-footer">

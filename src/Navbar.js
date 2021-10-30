@@ -12,7 +12,7 @@ const Navbar = ({
   addToHidden,
   addToSaved,
   removeFromSaved,
-  removeFromHidden
+  removeFromHidden,
 }) => {
   const navItems = ["Все матчи", "Онлайн", "Завершенные"];
   const navItemsRoutes = ["all", "online", "finished"];

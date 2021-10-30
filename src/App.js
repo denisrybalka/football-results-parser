@@ -7,9 +7,9 @@ import Championships from "./Championships";
 import Saved from "./Saved";
 import Hidden from "./Hidden";
 import Team from "./Team";
+import { Route, Switch } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Route, Switch } from "react-router-dom";
 
 const url = "http://localhost:3001";
 
@@ -45,6 +45,8 @@ const App = () => {
           hidden,
         };
       });
+    } else {
+      updateData();
     }
   }, []);
 
@@ -79,6 +81,20 @@ const App = () => {
               };
             }),
             updateTime: lastUpdate,
+            saved: state.saved.map((el) => {
+              // обновляем сохраненные
+              const idx = data.findIndex((g) => g.statistic === el.statistic);
+              if (idx > -1) {
+                return data[idx];
+              } else return el;
+            }),
+            hidden: state.hidden.map((el) => {
+              // обновляем скрытые
+              const idx = data.findIndex((g) => g.statistic === el.statistic);
+              if (idx > -1) {
+                return data[idx];
+              } else return el;
+            }),
           };
         });
       })
@@ -265,11 +281,14 @@ const App = () => {
 
   const selectActiveChampionship = (country) => {
     setLoading(true);
-    axios.get(`${url}/getChampionship/${country}`).then(({data}) => {
-      console.log(data);
-      setChampionship(data);
-    }).finally(() => setLoading(false));
-  }
+    axios
+      .get(`${url}/getChampionship/${country}`)
+      .then(({ data }) => {
+        console.log(data);
+        setChampionship(data);
+      })
+      .finally(() => setLoading(false));
+  };
 
   return (
     <div className="App">
@@ -292,7 +311,11 @@ const App = () => {
               />
             </Route>
             <Route exact path="/championships">
-              <Championships championship={championship} selectActiveChampionship={selectActiveChampionship} loading={loading}/>
+              <Championships
+                championship={championship}
+                selectActiveChampionship={selectActiveChampionship}
+                loading={loading}
+              />
             </Route>
             <Route exact path="/saved">
               <Saved
