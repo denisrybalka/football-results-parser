@@ -25,7 +25,13 @@ const Team = ({ getTeamInfo, teamInfo, loading, removeTeamInfo }) => {
           <div className="card-body">
             <h5 className="card-title">{teamInfo && teamInfo.name}</h5>
             <p className="card-text">{teamInfo && teamInfo.country}</p>
-            <Link className="btn btn-secondary" to="/panel/all" onClick={removeTeamInfo}>Вернуться на главную</Link>
+            <Link
+              className="btn btn-secondary"
+              to="/panel/all"
+              onClick={removeTeamInfo}
+            >
+              Вернуться на главную
+            </Link>
           </div>
           <ul className="list-group list-group-flush">
             {teamInfo &&
@@ -38,11 +44,6 @@ const Team = ({ getTeamInfo, teamInfo, loading, removeTeamInfo }) => {
                 );
               })}
           </ul>
-          {/* <div className="card-body">
-            <a href="/" className="card-link">
-              Добавить в избранное
-            </a>
-          </div> */}
         </>
       )}
     </div>

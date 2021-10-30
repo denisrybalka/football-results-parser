@@ -91,7 +91,7 @@
 .goals-wrap {
   display: flex;
   justify-content: space-between;
-  margin: 0px 150px;
+  margin: 0px 125px;
 }
 
 .goals-block__goal {
@@ -154,4 +154,18 @@
 
 .save-btn {
   margin-left: 5px;
+}
+
+small {
+  margin-right: -20px;
+}
+
+.Championship {
+  width: 100%;
+}
+
+.select {
+  display: block;
+  margin: 0px auto;
+  margin-bottom: 30px;
 }

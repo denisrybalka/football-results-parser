@@ -26,6 +26,7 @@ const App = () => {
   });
   const [loading, setLoading] = React.useState(false);
   const [modal, setModal] = React.useState(false);
+  const [championship, setChampionship] = React.useState(null);
 
   React.useEffect(() => {
     const localData = JSON.parse(localStorage.getItem("data"));
@@ -221,7 +222,7 @@ const App = () => {
         };
       });
     }
-  }
+  };
 
   const getTeamInfo = (teamId) => {
     setLoading(true);
@@ -262,6 +263,14 @@ const App = () => {
     });
   };
 
+  const selectActiveChampionship = (country) => {
+    setLoading(true);
+    axios.get(`${url}/getChampionship/${country}`).then(({data}) => {
+      console.log(data);
+      setChampionship(data);
+    }).finally(() => setLoading(false));
+  }
+
   return (
     <div className="App">
       <div className="card main-block">
@@ -283,7 +292,7 @@ const App = () => {
               />
             </Route>
             <Route exact path="/championships">
-              <Championships />
+              <Championships championship={championship} selectActiveChampionship={selectActiveChampionship} loading={loading}/>
             </Route>
             <Route exact path="/saved">
               <Saved

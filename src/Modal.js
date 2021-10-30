@@ -9,7 +9,6 @@ const Modal = ({
   data,
   loading,
   addToSaved,
-  addToHidden,
 }) => {
   const { modalActiveGame: game } = data;
 

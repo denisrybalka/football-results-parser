@@ -10,7 +10,7 @@ const Content = ({
   addToHidden,
   addToSaved,
   removeFromSaved,
-  removeFromHidden
+  removeFromHidden,
 }) => {
   const parsedDate = new Date(data.updateTime);
   const minutes = parsedDate.getMinutes();
@@ -73,8 +73,7 @@ const Content = ({
 
   return (
     <div className="Content">
-      {renderContentBody(history.location.pathname.split("/")[2])}{" "}
-      {/* "/panel/all" =>> all */}
+      {renderContentBody(history.location.pathname.split("/")[2])}
     </div>
   );
 };
