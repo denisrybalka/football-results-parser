@@ -15,6 +15,15 @@ const Sidebar = ({ handleActiveBar, data }) => {
     "saved",
     "hidden",
   ];
+
+  React.useEffect(() => {
+    const location = history.location.pathname;
+    const activeBar = listGroupItemsRoutes.findIndex(
+      (a) => a === location.slice(1)
+    );
+    handleActiveBar(activeBar);
+  }, []);
+
   const history = useHistory();
   const isSidebarHidden =
     history.location.pathname.split("/").findIndex((a) => a === "team") !==

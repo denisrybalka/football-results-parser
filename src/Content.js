@@ -49,7 +49,7 @@ const Content = ({
           {loading && !data.modalActiveGame ? (
             <Loader height="60vh" />
           ) : (
-            filteredGames && 
+            filteredGames &&
             filteredGames.map((game, i) => {
               return (
                 <CardBody

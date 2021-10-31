@@ -50,7 +50,7 @@ const CardBody = ({
         }}
       >
         <div
-          className="card-body game-block"
+          className="card-body game-block animate__animated animate__fadeIn"
           onClick={() => toggleModal(true, game)}
         >
           <div className="card-title">

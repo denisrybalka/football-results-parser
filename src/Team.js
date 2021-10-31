@@ -16,7 +16,7 @@ const Team = ({ getTeamInfo, teamInfo, loading, removeTeamInfo }) => {
       {loading ? (
         <Loader />
       ) : (
-        <>
+        <div className="animate__animated animate__fadeIn animate__faster">
           <img
             src={teamInfo && teamInfo.logo}
             className="card-img-top"
@@ -44,7 +44,7 @@ const Team = ({ getTeamInfo, teamInfo, loading, removeTeamInfo }) => {
                 );
               })}
           </ul>
-        </>
+        </div>
       )}
     </div>
   );

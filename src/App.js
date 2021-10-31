@@ -7,11 +7,12 @@ import Championships from "./Championships";
 import Saved from "./Saved";
 import Hidden from "./Hidden";
 import Team from "./Team";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "animate.css";
 
-const url = "http://localhost:3001";
+const url = "https://football-results-api.herokuapp.com";
 
 const App = () => {
   const [data, setData] = React.useState({
@@ -27,6 +28,7 @@ const App = () => {
   const [loading, setLoading] = React.useState(false);
   const [modal, setModal] = React.useState(false);
   const [championship, setChampionship] = React.useState(null);
+  const history = useHistory();
 
   React.useEffect(() => {
     const localData = JSON.parse(localStorage.getItem("data"));
@@ -265,6 +267,7 @@ const App = () => {
       return {
         ...state,
         teamInfo: null,
+        activeBar: 0,
       };
     });
   };
@@ -296,7 +299,7 @@ const App = () => {
         <div className="card-body main-block__inner">
           <Sidebar handleActiveBar={handleActiveBar} data={data} />
           <Switch>
-            <Route path="/panel/:filter">
+            <Route exact path="/panel/:filter">
               <Navbar
                 updateData={updateData}
                 data={data}

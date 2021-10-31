@@ -20,7 +20,9 @@ const Championships = ({ championship, selectActiveChampionship, loading }) => {
         onChange={(e) => selectActiveChampionship(e.target.value)}
         defaultValue="1"
       >
-        <option disabled value="1">Выберите чемпионат</option>
+        <option disabled value="1">
+          Выберите чемпионат
+        </option>
         {championships.map(({ value, league }, i) => {
           return (
             <option value={value} key={i}>
@@ -32,39 +34,41 @@ const Championships = ({ championship, selectActiveChampionship, loading }) => {
       {loading ? (
         <Loader />
       ) : (
-        championship && <table className="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">№</th>
-              <th scope="col">Команда</th>
-              <th scope="col">И</th>
-              <th scope="col">В</th>
-              <th scope="col">Н</th>
-              <th scope="col">П</th>
-              <th scope="col">Разница мячей</th>
-              <th scope="col">Очки</th>
-            </tr>
-          </thead>
-          <tbody>
-            {championship &&
-              championship.map((ch, i) => {
-                return (
-                  <tr key={i}>
-                    <th scope="row">{ch.place}</th>
-                    <td>
-                      <Link to={`/team/${ch.name.id}`}>{ch.name.name}</Link>
-                    </td>
-                    <td>{ch.games}</td>
-                    <td>{ch.wins}</td>
-                    <td>{ch.draws}</td>
-                    <td>{ch.defeats}</td>
-                    <td>{ch["goals-difference"]}</td>
-                    <td>{ch.points}</td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+        championship && (
+          <table className="table table-striped animate__animated animate__fadeIn animate__faster">
+            <thead>
+              <tr>
+                <th scope="col">№</th>
+                <th scope="col">Команда</th>
+                <th scope="col">И</th>
+                <th scope="col">В</th>
+                <th scope="col">Н</th>
+                <th scope="col">П</th>
+                <th scope="col">Разница мячей</th>
+                <th scope="col">Очки</th>
+              </tr>
+            </thead>
+            <tbody>
+              {championship &&
+                championship.map((ch, i) => {
+                  return (
+                    <tr key={i}>
+                      <th scope="row">{ch.place}</th>
+                      <td>
+                        <Link to={`/team/${ch.name.id}`}>{ch.name.name}</Link>
+                      </td>
+                      <td>{ch.games}</td>
+                      <td>{ch.wins}</td>
+                      <td>{ch.draws}</td>
+                      <td>{ch.defeats}</td>
+                      <td>{ch["goals-difference"]}</td>
+                      <td>{ch.points}</td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        )
       )}
     </div>
   );

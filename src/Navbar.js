@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Content from "./Content";
 
 const Navbar = ({
@@ -16,6 +16,15 @@ const Navbar = ({
 }) => {
   const navItems = ["Все матчи", "Онлайн", "Завершенные"];
   const navItemsRoutes = ["all", "online", "finished"];
+  const history = useHistory();
+
+  React.useEffect(() => {
+    const location = history.location.pathname;
+    const activeTab = navItemsRoutes.findIndex(
+      (a) => a === location.split("/")[2]
+    );
+    handleActiveTab(activeTab);
+  }, []);
 
   return (
     <div className="Navbar">

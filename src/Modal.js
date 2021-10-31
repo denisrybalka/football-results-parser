@@ -36,7 +36,7 @@ const Modal = ({ isToggleModal, toggleModal, data, loading, addToSaved }) => {
       className="modal fade show"
       style={{ display: isToggleModal ? "block" : "none" }}
     >
-      <div className="modal-dialog modal-dialog-centered modal-lg">
+      <div className="modal-dialog modal-dialog-centered modal-lg animate__animated animate__fadeInDownBig animate__faster">
         <div className="modal-content">
           <div className="modal-header">
             <div className="modal-title text-muted">
@@ -51,7 +51,7 @@ const Modal = ({ isToggleModal, toggleModal, data, loading, addToSaved }) => {
           {loading ? (
             <Loader height="15vh" />
           ) : (
-            <div className="modal-body">
+            <div className="modal-body animate__animated animate__fadeIn">
               <div className="header-wrap">
                 <div className="header-team">
                   <img
